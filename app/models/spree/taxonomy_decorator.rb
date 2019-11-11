@@ -1,5 +1,9 @@
-Spree::Taxonomy.class_eval do
-  belongs_to :store
+module Spree::TaxonomyDecorator
+  def self.prepended(base)
+    base.belongs_to :store
 
-  scope :by_store, -> (store) { where(store_id: store) }
+    base.scope :by_store, -> (store) { where(store_id: store) }
+  end
 end
+
+::Spree::Taxonomy.prepend(Spree::TaxonomyDecorator)

@@ -1,6 +1,7 @@
-Spree::ProductsController.class_eval do
-
-  before_action :can_show_product, only: :show
+module Spree::ProductsControllerDecorator
+  def self.prepended(base)
+    base.before_action :can_show_product, only: :show
+  end
 
   def index
     @searcher = build_searcher(params.merge(include_images: true))
@@ -18,3 +19,5 @@ Spree::ProductsController.class_eval do
     end
   end
 end
+
+::Spree::ProductsController.prepend(Spree::ProductsControllerDecorator)
