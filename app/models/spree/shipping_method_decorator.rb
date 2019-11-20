@@ -1,6 +1,8 @@
-Spree::ShippingMethod.class_eval do
-  has_many :store_shipping_methods
-  has_many :stores, through: :store_shipping_methods
+module Spree::ShippingMethodDecorator
+  def self.prepended(base)
+    base.has_many :store_shipping_methods
+    base.has_many :stores, through: :store_shipping_methods
+  end
 
   # This adds store_match to the list of requirements.
   # This will need to be fixed for Spree 2.0 when split shipments is added
@@ -16,3 +18,5 @@ Spree::ShippingMethod.class_eval do
     order.store.shipping_methods.empty? || stores.include?(order.store)
   end
 end
+
+::Spree::ShippingMethod.prepend(Spree::ShippingMethodDecorator)

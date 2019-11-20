@@ -1,6 +1,8 @@
-Spree::PaymentMethod.class_eval do
-  has_many :store_payment_methods
-  has_many :stores, through: :store_payment_methods
+module Spree::PaymentMethodDecorator
+  def self.prepended(base)
+    base.has_many :store_payment_methods
+    base.has_many :stores, through: :store_payment_methods
+  end
 
   def self.available(display_on = 'both', store = nil)
     result = all.select do |payment_method|
@@ -10,3 +12,5 @@ Spree::PaymentMethod.class_eval do
     end
   end
 end
+
+::Spree::PaymentMethod.prepend(Spree::PaymentMethodDecorator)

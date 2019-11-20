@@ -1,4 +1,4 @@
-Spree::TaxonsController.class_eval do
+module Spree::TaxonsControllerDecorator
    def show
     @taxon = Spree::Taxon.find_by_store_id_and_permalink!(current_store.id, params[:id])
     return unless @taxon
@@ -8,3 +8,5 @@ Spree::TaxonsController.class_eval do
     @taxonomies = get_taxonomies
   end
 end
+
+::Spree::TaxonsController.prepend(Spree::TaxonsControllerDecorator)

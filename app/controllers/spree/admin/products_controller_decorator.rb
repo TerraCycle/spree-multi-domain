@@ -1,5 +1,7 @@
-Spree::Admin::ProductsController.class_eval do
-  before_action :find_stores, only: [:update]
+module Spree::Admin::ProductsControllerDecorator
+  def self.prepended(base)
+    base.before_action :find_stores, only: [:update]
+  end
 
   private
 
@@ -9,5 +11,6 @@ Spree::Admin::ProductsController.class_eval do
       params[:product][:store_ids] = store_ids.split(',')
     end
   end
-
 end
+
+::Spree::Admin::ProductsController.prepend(Spree::Admin::ProductsControllerDecorator)

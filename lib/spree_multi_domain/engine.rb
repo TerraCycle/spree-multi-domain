@@ -20,6 +20,11 @@ module SpreeMultiDomain
     initializer "templates with dynamic layouts" do |app|
       ActionView::TemplateRenderer.prepend(
         Module.new do
+          def render(context, options)
+            @view = context
+            super(context, options)
+          end
+
           def find_layout(layout, locals, formats=[])
             store_layout = layout
             if @view.respond_to?(:current_store) && @view.current_store && !@view.controller.is_a?(Spree::Admin::BaseController) && !@view.controller.is_a?(Spree::Api::BaseController)
