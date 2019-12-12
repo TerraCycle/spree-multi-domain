@@ -8,13 +8,11 @@ module Spree
         base.before_action :load_shipping_methods
       end
 
-      def index
-        super
-        @stores = @stores.ransack({ name_or_domains_or_code_cont: params[:q] }).result if params[:q]
-        @stores = @stores.where(id: params[:ids].split(',')) if params[:ids]
+      def search
+        @stores = Spree::Store.ransack({ name_or_domains_or_code_cont: params[:q] }).result if params[:q]
+        @stores = Spree::Store.where(id: params[:ids].split(',')) if params[:ids]
 
         respond_with(@stores) do |format|
-          format.html
           format.json
         end
       end
