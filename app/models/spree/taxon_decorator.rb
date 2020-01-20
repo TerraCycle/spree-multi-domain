@@ -1,12 +1,14 @@
-module Spree::TaxonDecorator
-  def self.prepended(base)
-    base.scope :by_store, -> (store) { joins(:taxonomy).merge(Spree::Taxonomy.by_store(store)) }
-    base.extend ClassMethods
-  end
+module Spree
+  module TaxonDecorator
+    def self.prepended(base)
+      base.scope :by_store, -> (store) { joins(:taxonomy).merge(Spree::Taxonomy.by_store(store)) }
+      base.extend ClassMethods
+    end
 
-  module ClassMethods
-    def find_by_store_id_and_permalink!(store_id, permalink)
-      by_store(store_id).where(permalink: permalink).first!
+    module ClassMethods
+      def find_by_store_id_and_permalink!(store_id, permalink)
+        by_store(store_id).where(permalink: permalink).first!
+      end
     end
   end
 end
