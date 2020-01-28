@@ -1,10 +1,13 @@
 module Spree::TrackerDecorator
   def self.perepended
     base.belongs_to :store
+    base.extend ClassMethods
   end
 
-  def self.current(engine = Spree::Tracker::TRACKING_ENGINES, domain)
-    Spree::Tracker.where(engine: engine).active.joins(:store).where("spree_stores.url LIKE ?", "%#{domain}%").first
+  module ClassMethods
+    def current(engine = Spree::Tracker::TRACKING_ENGINES, domain)
+      Spree::Tracker.where(engine: engine).active.joins(:store).where("spree_stores.url LIKE ?", "%#{domain}%").first
+    end
   end
 end
 
