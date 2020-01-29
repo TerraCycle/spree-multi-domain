@@ -1,21 +1,21 @@
 require 'spec_helper'
 
 module Spree
-  describe ProductsHelper do
-    before(:each) do
-      @store     = FactoryBot.create(:store)
-      @taxonomy  = FactoryBot.create(:taxonomy, store: @store)
-      @taxonomy2 = FactoryBot.create(:taxonomy)
+  module Api
+    describe TaxonomyHelper do
+      let!(:store)     { create(:store) }
+      let!(:taxonomy)  { create(:taxonomy, store: store) }
+      let!(:taxonomy2) { create(:taxonomy) }
 
-      helper.stub(:current_store) { @store }
-    end
+      before { allow(helper).to receive(:current_store).and_return(store) }
 
-    describe "#get_taxonomies" do
-      it "only show taxonomies on current_store" do
-        taxonomies = helper.get_taxonomies
+      describe "#get_taxonomies" do
+        it "only show taxonomies on current_store" do
+          taxonomies = helper.get_taxonomies
 
-        taxonomies.should include(@taxonomy)
-        taxonomies.should_not include(@taxonomy2)
+          expect(taxonomies).to include(taxonomy)
+          expect(taxonomies).not_to include(taxonomy2)
+        end
       end
     end
   end
